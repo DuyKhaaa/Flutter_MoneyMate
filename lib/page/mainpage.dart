@@ -79,6 +79,23 @@ class _MainpageState extends State<Mainpage> {
     return null;
   }
 
+  // Hàm đăng xuất khỏi Firebase Authentication
+  Future<void> _logout() async {
+    try {
+      await FirebaseAuth.instance.signOut(); // Đăng xuất khỏi Firebase
+      print('Đã đăng xuất thành công');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => DangNhap()),
+      );
+    } catch (e) {
+      print('Lỗi khi đăng xuất: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lỗi khi đăng xuất: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -198,14 +215,7 @@ class _MainpageState extends State<Mainpage> {
             ListTile(
               leading: const Icon(Icons.exit_to_app),
               title: const Text('Đăng xuất'),
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DangNhap(),
-                  ),
-                );
-              },
+              onTap: _logout, // Gọi hàm đăng xuất
             ),
           ],
         ),
